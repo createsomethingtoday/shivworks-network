@@ -8,7 +8,7 @@ import { readFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
 import type { D1Database } from '@cloudflare/workers-types';
 
-type DbMode = 'cloudflare-d1' | 'postgres' | 'sqlite';
+export type DbMode = 'cloudflare-d1' | 'postgres' | 'sqlite';
 
 let _sqliteDb: any = null;
 let _sqliteInitialized = false;
@@ -31,10 +31,39 @@ function forPostgres(sql: string): string {
 		.replace(/AUTOINCREMENT/gi, '');
 }
 
-function getMode(cloudflareDb?: D1Database): DbMode {
-	if (cloudflareDb) return 'cloudflare-d1';
-	const databaseUrl = process.env.DATABASE_URL;
+function normalizeDbMode(value?: string): DbMode | null {
+	switch (value?.trim().toLowerCase()) {
+		case 'cloudflare-d1':
+		case 'd1':
+			return 'cloudflare-d1';
+		case 'postgres':
+		case 'postgresql':
+			return 'postgres';
+		case 'sqlite':
+			return 'sqlite';
+		default:
+			return null;
+	}
+}
+
+function isReplitPreviewEnv(env: NodeJS.ProcessEnv): boolean {
+	return Boolean(env.REPLIT_DEV_DOMAIN || env.REPLIT_DOMAINS);
+}
+
+export function resolveDbMode(options: {
+	cloudflareDb?: D1Database;
+	env?: NodeJS.ProcessEnv;
+} = {}): DbMode {
+	const env = options.env ?? process.env;
+	const explicitMode = normalizeDbMode(env.SHIVWORKS_DB_MODE);
+
+	if (explicitMode) return explicitMode;
+	if (isReplitPreviewEnv(env)) return 'sqlite';
+	if (options.cloudflareDb) return 'cloudflare-d1';
+
+	const databaseUrl = env.DATABASE_URL;
 	if (databaseUrl && databaseUrl.startsWith('postgres')) return 'postgres';
+
 	return 'sqlite';
 }
 
@@ -238,7 +267,7 @@ export class D1Compat {
 
 	constructor(cloudflareDb?: D1Database) {
 		this.cloudflareDb = cloudflareDb;
-		this.mode = getMode(cloudflareDb);
+		this.mode = resolveDbMode({ cloudflareDb, env: process.env });
 	}
 
 	prepare(sql: string): D1PreparedStatement {
