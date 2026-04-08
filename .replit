@@ -1,6 +1,6 @@
 entrypoint = "package.json"
 language = "nodejs"
-modules = ["nodejs-20"]
+modules = ["nodejs-18"]
 hidden = [".git", ".next", ".svelte-kit", "node_modules", ".pnpm-store", ".wrangler"]
 
 [gitHubImport]
