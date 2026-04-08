@@ -1,0 +1,22 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "shivworks-network",
+	"compatibility_date": "2026-03-20",
+	"compatibility_flags": ["nodejs_compat"],
+	"pages_build_output_dir": ".svelte-kit/cloudflare",
+	"vars": {
+		"ENVIRONMENT": "production",
+		"PUBLIC_SITE_URL": "https://shivworks-network.pages.dev",
+		"PUBLIC_SHIVWORKS_MAIN_SITE": "https://shivworks.com",
+		"PUBLIC_SHIVWORKS_STORE_URL": "https://shivworkspg.com",
+		"PUBLIC_SHIVWORKS_MEMBERSHIP_URL": "https://shivworkspg.com/theshivworksnetwork/"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "shivworks-network-db",
+			"database_id": "62f1de1e-df8b-4cb1-b382-1e463d3375e1",
+			"preview_database_id": "26dd5a78-1e79-4c2b-b869-10a08e2e7dfa"
+		}
+	]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@create-something/shivworks-network",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "vitest --run --passWithNoTests",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"email:client-progress": "node --import tsx scripts/send-client-progress-email.ts",
+		"deploy": "pnpm build && wrangler pages deploy .svelte-kit/cloudflare --project-name=shivworks-network --branch=main",
+		"deploy:preview": "pnpm build && wrangler pages deploy .svelte-kit/cloudflare --project-name=shivworks-network --branch=preview",
+		"migrate": "wrangler d1 migrations apply shivworks-network-db --remote",
+		"migrate:list": "wrangler d1 migrations list shivworks-network-db --remote",
+		"db:shell": "wrangler d1 execute shivworks-network-db --remote --command",
+		"types": "wrangler types"
+	},
+  "dependencies": {
+    "@clerk/backend": "^2.18.0",
+    "@clerk/clerk-js": "^5.57.1",
+    "better-sqlite3": "^12.6.2",
+    "lucide-svelte": "^0.562.0",
+    "pg": "^8.18.0",
+    "resend": "^6.7.0",
+    "stripe": "^20.1.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "@sveltejs/adapter-cloudflare": "^6.0.0",
+    "@sveltejs/kit": "^2.15.1",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/pg": "^8.16.0",
+    "svelte": "^5.16.0",
+    "svelte-check": "^4.1.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6",
+    "vitest": "^4.0.18",
+    "wrangler": "^4.64.0"
+  }
+}

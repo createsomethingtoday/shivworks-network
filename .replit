@@ -1,0 +1,17 @@
+entrypoint = "package.json"
+language = "nodejs"
+modules = ["nodejs-20"]
+hidden = [".git", ".next", ".svelte-kit", "node_modules", ".pnpm-store", ".wrangler"]
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "replit.md", "package.json"]
+
+[run]
+args = [
+  "bash",
+  "-lc",
+  "if [ ! -d node_modules ]; then pnpm install --frozen-lockfile=false; fi && pnpm dev -- --host 0.0.0.0 --port ${PORT:-3000}"
+]
+
+[nix]
+channel = "stable-24_05"
