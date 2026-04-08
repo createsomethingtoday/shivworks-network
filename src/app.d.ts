@@ -29,6 +29,7 @@ declare global {
 				PUBLIC_SHIVWORKS_STORE_URL?: string;
 				PUBLIC_SHIVWORKS_MEMBERSHIP_URL?: string;
 				PUBLIC_CIRCLE_COMMUNITY_URL?: string;
+				PUBLIC_SUPPORT_EMAIL?: string;
 				PUBLIC_CLERK_PUBLISHABLE_KEY?: string;
 				CLERK_SECRET_KEY?: string;
 				CLERK_JWT_KEY?: string;
