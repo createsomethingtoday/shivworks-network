@@ -21,6 +21,10 @@ This repository is already scoped to the ShivWorks member app.
 - `Resend`
 - `Circle`
 
+## Runtime note
+
+Use Node `20` in Replit. This app uses `better-sqlite3` for local D1 compatibility, and that dependency requires Node `20+`.
+
 ## Replit usage
 
 Use Replit for product editing, previewing, and client-side iteration.
