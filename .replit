@@ -3,7 +3,7 @@ language = "nodejs"
 modules = ["nodejs-20"]
 hidden = [".git", ".next", ".svelte-kit", "node_modules", ".pnpm-store", ".wrangler"]
 onBoot = "pnpm install --frozen-lockfile=false && pnpm exec svelte-kit sync"
-run = "pnpm exec vite dev --host 0.0.0.0 --port 3000"
+run = "pnpm exec svelte-kit sync && pnpm exec vite dev --host 0.0.0.0 --port 3000"
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", "replit.md", "package.json"]
