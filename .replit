@@ -18,4 +18,4 @@ externalPort = 80
 [deployment]
 deploymentTarget = "cloudrun"
 build = ["pnpm", "build:replit"]
-run = ["bash", "-lc", "mkdir -p data && SHIVWORKS_DB_MODE=sqlite DATABASE_PATH=./data/shivworks-network.db HOST=0.0.0.0 PORT=3000 node build"]
+run = ["pnpm", "start:replit"]
