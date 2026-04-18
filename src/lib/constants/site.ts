@@ -1,4 +1,4 @@
-import { env as publicEnv } from '$env/dynamic/public';
+const publicEnv = import.meta.env;
 
 export const SITE_NAME = 'ShivWorks Network';
 export const SITE_TAGLINE = 'The private training platform for ShivWorks members.';

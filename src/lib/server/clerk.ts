@@ -10,6 +10,7 @@ export interface ClerkRuntimeEnv extends Record<string, string | undefined> {
 	CLERK_SECRET_KEY?: string;
 	CLERK_JWT_KEY?: string;
 	CLERK_WEBHOOK_SIGNING_SECRET?: string;
+	CLERK_AUTHORIZED_PARTIES?: string;
 	PUBLIC_SITE_URL?: string;
 }
 
@@ -29,6 +30,32 @@ function normalizeJwtKey(value: string | undefined): string | undefined {
 	return value.replace(/\\n/g, '\n');
 }
 
+function normalizeAuthorizedParty(value: string): string {
+	const trimmed = value.trim();
+	if (!trimmed) return '';
+
+	try {
+		return new URL(trimmed).origin;
+	} catch {
+		return trimmed.replace(/\/+$/, '');
+	}
+}
+
+export function resolveAuthorizedParties(
+	env: ClerkRuntimeEnv
+): string[] | undefined {
+	const configured =
+		env.CLERK_AUTHORIZED_PARTIES?.split(',')
+			.map(normalizeAuthorizedParty)
+			.filter(Boolean) ?? [];
+	const canonical = env.PUBLIC_SITE_URL
+		? [normalizeAuthorizedParty(env.PUBLIC_SITE_URL)].filter(Boolean)
+		: [];
+	const origins = Array.from(new Set([...canonical, ...configured]));
+
+	return origins.length > 0 ? origins : undefined;
+}
+
 export async function authenticateClerkRequest(
 	request: Request,
 	env: ClerkRuntimeEnv
@@ -45,7 +72,7 @@ export async function authenticateClerkRequest(
 		const clerkClient = getClerkClient(env);
 		const requestState = await clerkClient.authenticateRequest(request, {
 			jwtKey: normalizeJwtKey(env.CLERK_JWT_KEY),
-			authorizedParties: env.PUBLIC_SITE_URL ? [env.PUBLIC_SITE_URL] : undefined
+			authorizedParties: resolveAuthorizedParties(env)
 		});
 		const auth = requestState.toAuth();
 		const userId = auth?.userId ?? null;

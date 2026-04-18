@@ -10,7 +10,7 @@
 		"build:replit": "SHIVWORKS_DEPLOY_TARGET=replit vite build",
 		"start:replit": "mkdir -p data && SHIVWORKS_DB_MODE=sqlite DATABASE_PATH=./data/shivworks-network.db HOST=0.0.0.0 PORT=3000 node build",
 		"preview": "vite preview",
-		"test": "vitest --run --passWithNoTests",
+		"test": "svelte-kit sync && vitest --run --passWithNoTests",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"email:client-progress": "node --import tsx scripts/send-client-progress-email.ts",
